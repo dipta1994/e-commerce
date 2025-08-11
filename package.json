@@ -1,0 +1,32 @@
+{
+  "name": "ecommerce-website",
+  "version": "1.0.0",
+  "description": "Full-stack e-commerce website with Node.js backend and React frontend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "client": "cd client && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build": "cd client && npm run build",
+    "install-client": "cd client && npm install",
+    "heroku-postbuild": "npm run install-client && npm run build",
+    "deploy:render": "npm run build && git add . && git commit -m 'Deploy to Render' && git push",
+    "deploy:vercel": "vercel --prod"
+  },
+  "keywords": ["ecommerce", "nodejs", "react", "redux"],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "express-validator": "^7.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "concurrently": "^8.2.0"
+  }
+}
