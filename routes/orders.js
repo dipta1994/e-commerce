@@ -1,6 +1,25 @@
 const express = require('express');
 const router = express.Router();
 
+// Local auth middleware (copy from auth.js)
+const auth = (req, res, next) => {
+  const token = req.header('x-auth-token');
+  
+  if (!token) {
+    return res.status(401).json({ message: 'No token, authorization denied' });
+  }
+  
+  try {
+    // For now, we'll use a simple token validation
+    // In production, you should use JWT verification
+    const decoded = { user: { id: 1 } }; // Dummy user for testing
+    req.user = decoded.user;
+    next();
+  } catch (err) {
+    res.status(401).json({ message: 'Token is not valid' });
+  }
+};
+
 // Dummy order data
 let orders = [
   {
@@ -63,7 +82,7 @@ let orders = [
 ];
 
 // Get all orders for a user
-router.get('/user/:userId', (req, res) => {
+router.get('/user/:userId', auth, (req, res) => {
   try {
     const userOrders = orders.filter(order => order.userId === parseInt(req.params.userId));
     res.json(userOrders);
@@ -73,7 +92,7 @@ router.get('/user/:userId', (req, res) => {
 });
 
 // Get single order
-router.get('/:id', (req, res) => {
+router.get('/:id', auth, (req, res) => {
   try {
     const order = orders.find(o => o.id === parseInt(req.params.id));
     if (!order) {
@@ -86,12 +105,23 @@ router.get('/:id', (req, res) => {
 });
 
 // Create new order
-router.post('/', (req, res) => {
+router.post('/', auth, (req, res) => {
   try {
+    console.log('Creating order with data:', req.body);
+    console.log('User from token:', req.user);
+    
     const { userId, items, totalAmount, shippingAddress, paymentMethod } = req.body;
     
+    // Validate required fields
     if (!userId || !items || !totalAmount || !shippingAddress || !paymentMethod) {
+      console.log('Missing required fields:', { userId, items, totalAmount, shippingAddress, paymentMethod });
       return res.status(400).json({ message: 'All fields are required' });
+    }
+    
+    // Validate that the user ID matches the authenticated user
+    if (parseInt(userId) !== req.user.id) {
+      console.log('User ID mismatch:', { requestedUserId: userId, authenticatedUserId: req.user.id });
+      return res.status(403).json({ message: 'Unauthorized: User ID mismatch' });
     }
     
     const newOrder = {
@@ -106,15 +136,17 @@ router.post('/', (req, res) => {
       updatedAt: new Date().toISOString()
     };
     
+    console.log('Created order:', newOrder);
     orders.push(newOrder);
     res.status(201).json(newOrder);
   } catch (error) {
+    console.error('Error creating order:', error);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
 // Update order status
-router.patch('/:id/status', (req, res) => {
+router.patch('/:id/status', auth, (req, res) => {
   try {
     const { status } = req.body;
     const order = orders.find(o => o.id === parseInt(req.params.id));
@@ -133,7 +165,7 @@ router.patch('/:id/status', (req, res) => {
 });
 
 // Cancel order
-router.patch('/:id/cancel', (req, res) => {
+router.patch('/:id/cancel', auth, (req, res) => {
   try {
     const order = orders.find(o => o.id === parseInt(req.params.id));
     
@@ -155,7 +187,7 @@ router.patch('/:id/cancel', (req, res) => {
 });
 
 // Get order statistics
-router.get('/stats/user/:userId', (req, res) => {
+router.get('/stats/user/:userId', auth, (req, res) => {
   try {
     const userOrders = orders.filter(order => order.userId === parseInt(req.params.userId));
     

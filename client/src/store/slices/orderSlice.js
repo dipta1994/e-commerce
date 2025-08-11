@@ -6,17 +6,40 @@ export const createOrder = createAsyncThunk(
   'orders/createOrder',
   async (orderData, { rejectWithValue }) => {
     try {
+      console.log('Creating order with data:', orderData);
+      
       const token = localStorage.getItem('token');
+      console.log('Token found:', !!token);
+      
+      if (!token) {
+        console.error('No token found');
+        return rejectWithValue('No authentication token found');
+      }
+      
       const config = {
         headers: {
           'x-auth-token': token,
         },
       };
       
+      console.log('Making request to /api/orders');
       const response = await axios.post('/api/orders', orderData, config);
+      console.log('Order created successfully:', response.data);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data.message || 'Failed to create order');
+      console.error('Error creating order:', error);
+      console.error('Error response:', error.response);
+      
+      if (error.response) {
+        // Server responded with error status
+        return rejectWithValue(error.response.data.message || 'Failed to create order');
+      } else if (error.request) {
+        // Request was made but no response received
+        return rejectWithValue('No response from server. Please check your connection.');
+      } else {
+        // Something else happened
+        return rejectWithValue('Failed to create order: ' + error.message);
+      }
     }
   }
 );

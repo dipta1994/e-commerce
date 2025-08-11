@@ -25,7 +25,7 @@ const Checkout = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { items, total } = useSelector(state => state.cart);
-  const { user } = useSelector(state => state.auth);
+  const { user, isAuthenticated } = useSelector(state => state.auth);
 
   const handleChange = (e) => {
     setFormData({
@@ -59,8 +59,13 @@ const Checkout = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(e,'aaa');
     
+    // Check if user is authenticated
+    if (!isAuthenticated || !user) {
+      toast.error('Please login to place an order');
+      navigate('/login');
+      return;
+    }
     
     if (!validateForm()) {
       return;
@@ -89,6 +94,8 @@ const Checkout = () => {
         paymentMethod: formData.paymentMethod
       };
 
+      console.log('Submitting order:', orderData);
+
       await dispatch(createOrder(orderData)).unwrap();
       
       // Clear cart after successful order
@@ -97,7 +104,8 @@ const Checkout = () => {
       toast.success('Order placed successfully!');
       navigate('/orders');
     } catch (error) {
-      toast.error('Failed to place order. Please try again.');
+      console.error('Order error:', error);
+      toast.error(error.message || 'Failed to place order. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -111,9 +119,44 @@ const Checkout = () => {
     return null;
   }
 
+  // Check if user is authenticated
+  if (!isAuthenticated || !user) {
+    return (
+      <div className="min-h-screen bg-gray-50 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">Authentication Required</h1>
+            <p className="text-gray-600 mb-6">Please login to complete your purchase</p>
+            <button
+              onClick={() => navigate('/login')}
+              className="btn-primary px-6 py-3"
+            >
+              Go to Login
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Debug Info - Remove this in production */}
+        {/* {process.env.NODE_ENV === 'development' && (
+          <div className="mb-6 p-4 bg-yellow-100 border border-yellow-300 rounded-lg">
+            <h3 className="font-semibold text-yellow-800 mb-2">Debug Info:</h3>
+            <div className="text-sm text-yellow-700 space-y-1">
+              <p>Authenticated: {isAuthenticated ? 'Yes' : 'No'}</p>
+              <p>User ID: {user?.id || 'Not loaded'}</p>
+              <p>User Email: {user?.email || 'Not loaded'}</p>
+              <p>Token: {localStorage.getItem('token') ? 'Present' : 'Missing'}</p>
+              <p>Cart Items: {items.length}</p>
+              <p>Cart Total: ${total.toFixed(2)}</p>
+            </div>
+          </div>
+        )} */}
+
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Checkout</h1>
