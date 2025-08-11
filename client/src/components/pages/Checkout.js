@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { createOrder, clearCart } from '../../store/slices/orderSlice';
+import { createOrder } from '../../store/slices/orderSlice';
 import { clearCart as clearCartAction } from '../../store/slices/cartSlice';
 import { toast } from 'react-toastify';
 
