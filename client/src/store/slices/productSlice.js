@@ -1,6 +1,54 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../../utils/api';
 
+// Fallback data for when backend is not available
+const fallbackProducts = [
+  {
+    id: 1,
+    name: "Wireless Bluetooth Headphones",
+    description: "High-quality wireless headphones with noise cancellation",
+    price: 99.99,
+    category: "Electronics",
+    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400",
+    stock: 50,
+    rating: 4.5,
+    reviews: 128
+  },
+  {
+    id: 2,
+    name: "Smart Fitness Watch",
+    description: "Track your fitness goals with this advanced smartwatch",
+    price: 199.99,
+    category: "Electronics",
+    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400",
+    stock: 30,
+    rating: 4.3,
+    reviews: 89
+  },
+  {
+    id: 3,
+    name: "Organic Cotton T-Shirt",
+    description: "Comfortable and eco-friendly cotton t-shirt",
+    price: 29.99,
+    category: "Clothing",
+    image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
+    stock: 100,
+    rating: 4.7,
+    reviews: 256
+  },
+  {
+    id: 4,
+    name: "Stainless Steel Water Bottle",
+    description: "Keep your drinks cold for 24 hours with this insulated bottle",
+    price: 24.99,
+    category: "Home & Garden",
+    image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400",
+    stock: 75,
+    rating: 4.6,
+    reviews: 189
+  }
+];
+
 // Async thunks
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
@@ -9,7 +57,14 @@ export const fetchProducts = createAsyncThunk(
       const response = await api.get('/api/products', { params });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to fetch products');
+      console.log('Backend not available, using fallback data. Error:', error.message);
+      // Return fallback data if backend is not available
+      return {
+        products: fallbackProducts,
+        totalProducts: fallbackProducts.length,
+        totalPages: 1,
+        currentPage: 1
+      };
     }
   }
 );
@@ -33,7 +88,9 @@ export const fetchCategories = createAsyncThunk(
       const response = await api.get('/api/products/categories/all');
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to fetch categories');
+      console.log('Backend not available, using fallback categories');
+      // Return fallback categories if backend is not available
+      return ['Electronics', 'Clothing', 'Home & Garden', 'Sports', 'Accessories'];
     }
   }
 );

@@ -7,22 +7,28 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: [
-    'https://healbeebiotechdummy.netlify.app',
-    'https://dipta1994.github.io',
-    'http://localhost:3000',
-    'http://localhost:5000'
-  ],
+  origin: true, // Allow all origins for now
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'Origin', 'Accept']
 }));
 app.use(express.json());
+
+// Add request logging
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+  next();
+});
 
 // Import routes
 const productRoutes = require('./routes/products');
 const authRoutes = require('./routes/auth');
 const orderRoutes = require('./routes/orders');
+
+// Root route
+app.get('/', (req, res) => {
+  res.json({ message: 'E-commerce Backend is running!', timestamp: new Date().toISOString() });
+});
 
 // Test route
 app.get('/api/test', (req, res) => {
