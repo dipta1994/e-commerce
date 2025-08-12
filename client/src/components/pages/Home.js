@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { products, loading } = useSelector(state => state.products);
+  const { products = [], loading, error } = useSelector(state => state.products);
 
   useEffect(() => {
     // Fetch first 4 products for featured section
@@ -95,7 +95,17 @@ const Home = () => {
             <div className="flex justify-center">
               <div className="spinner"></div>
             </div>
-          ) : (
+          ) : error ? (
+            <div className="text-center py-8">
+              <p className="text-gray-600 mb-4">Unable to load products. Please try again later.</p>
+              <button 
+                onClick={() => dispatch(fetchProducts({ limit: 4 }))}
+                className="btn-primary"
+              >
+                Retry
+              </button>
+            </div>
+          ) : products && products.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {products.slice(0, 4).map((product) => (
                 <div key={product.id} className="card p-6 group">
@@ -145,6 +155,10 @@ const Home = () => {
                   </div>
                 </div>
               ))}
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <p className="text-gray-600">No products available at the moment.</p>
             </div>
           )}
           

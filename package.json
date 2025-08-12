@@ -12,7 +12,11 @@
     "install-client": "cd client && npm install",
     "heroku-postbuild": "npm run install-client && npm run build",
     "deploy:render": "npm run build && git add . && git commit -m 'Deploy to Render' && git push",
-    "deploy:vercel": "vercel --prod"
+    "deploy:vercel": "vercel --prod",
+    "deploy:netlify": "npm run build && netlify deploy --prod --dir=client/build",
+    "deploy:firebase": "npm run build && firebase deploy",
+    "deploy:surge": "npm run build && surge client/build",
+    "deploy:github-pages": "npm run build && gh-pages -d client/build"
   },
   "keywords": ["ecommerce", "nodejs", "react", "redux"],
   "author": "Your Name",
