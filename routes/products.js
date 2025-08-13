@@ -1,95 +1,181 @@
 const express = require('express');
 const router = express.Router();
 
-// Dummy product data
+// Dummy product data with new categories
 const products = [
+  // Raw Materials
   {
     id: 1,
-    name: "Wireless Bluetooth Headphones",
-    description: "High-quality wireless headphones with noise cancellation",
-    price: 99.99,
-    category: "Electronics",
-    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400",
-    stock: 50,
-    rating: 4.5,
-    reviews: 128
+    name: "High-Purity Cell Culture Media",
+    description: "Premium cell culture media for optimal cell growth and proliferation",
+    price: 299.99,
+    category: "Raw Materials",
+    image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400",
+    stock: 25,
+    rating: 4.8,
+    reviews: 156
   },
   {
     id: 2,
-    name: "Smart Fitness Watch",
-    description: "Track your fitness goals with this advanced smartwatch",
-    price: 199.99,
-    category: "Electronics",
-    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400",
-    stock: 30,
-    rating: 4.3,
+    name: "Recombinant Growth Factors",
+    description: "High-quality recombinant proteins for cell culture applications",
+    price: 599.99,
+    category: "Raw Materials",
+    image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400",
+    stock: 15,
+    rating: 4.9,
     reviews: 89
   },
   {
     id: 3,
-    name: "Organic Cotton T-Shirt",
-    description: "Comfortable and eco-friendly cotton t-shirt",
-    price: 29.99,
-    category: "Clothing",
-    image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400",
-    stock: 100,
+    name: "Serum-Free Supplements",
+    description: "Advanced supplements for serum-free cell culture systems",
+    price: 199.99,
+    category: "Raw Materials",
+    image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400",
+    stock: 40,
     rating: 4.7,
-    reviews: 256
+    reviews: 203
   },
+  
+  // Cleanroom Essentials
   {
     id: 4,
-    name: "Stainless Steel Water Bottle",
-    description: "Keep your drinks cold for 24 hours with this insulated bottle",
-    price: 24.99,
-    category: "Home & Garden",
-    image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400",
-    stock: 75,
+    name: "Sterile Gowning System",
+    description: "Complete sterile gowning system for cleanroom operations",
+    price: 89.99,
+    category: "Cleanroom Essentials",
+    image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400",
+    stock: 60,
     rating: 4.6,
-    reviews: 189
+    reviews: 178
   },
   {
     id: 5,
-    name: "Wireless Charging Pad",
-    description: "Fast wireless charging for all Qi-compatible devices",
-    price: 39.99,
-    category: "Electronics",
-    image: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=400",
-    stock: 45,
-    rating: 4.4,
+    name: "HEPA Air Filtration Units",
+    description: "High-efficiency particulate air filtration for cleanroom environments",
+    price: 1299.99,
+    category: "Cleanroom Essentials",
+    image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400",
+    stock: 8,
+    rating: 4.8,
     reviews: 67
   },
   {
     id: 6,
-    name: "Leather Wallet",
-    description: "Genuine leather wallet with multiple card slots",
-    price: 49.99,
-    category: "Accessories",
-    image: "https://images.unsplash.com/photo-1627123424574-724758594e93?w=400",
-    stock: 60,
-    rating: 4.8,
-    reviews: 142
+    name: "Sterile Gloves & Masks",
+    description: "Premium sterile gloves and masks for contamination control",
+    price: 24.99,
+    category: "Cleanroom Essentials",
+    image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400",
+    stock: 200,
+    rating: 4.5,
+    reviews: 342
   },
+  
+  // Downstream Support
   {
     id: 7,
-    name: "Bluetooth Speaker",
-    description: "Portable waterproof speaker with amazing sound quality",
-    price: 79.99,
-    category: "Electronics",
-    image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400",
-    stock: 35,
-    rating: 4.2,
-    reviews: 93
+    name: "Protein Purification Columns",
+    description: "High-performance chromatography columns for protein purification",
+    price: 899.99,
+    category: "Downstream Support",
+    image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400",
+    stock: 12,
+    rating: 4.9,
+    reviews: 45
   },
   {
     id: 8,
-    name: "Yoga Mat",
-    description: "Non-slip yoga mat perfect for home workouts",
-    price: 34.99,
-    category: "Sports",
-    image: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400",
-    stock: 80,
+    name: "Centrifugation Systems",
+    description: "Advanced centrifugation systems for cell and protein separation",
+    price: 2499.99,
+    category: "Downstream Support",
+    image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400",
+    stock: 5,
+    rating: 4.7,
+    reviews: 23
+  },
+  {
+    id: 9,
+    name: "Filtration Membranes",
+    description: "Ultrafiltration and microfiltration membranes for downstream processing",
+    price: 399.99,
+    category: "Downstream Support",
+    image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400",
+    stock: 30,
     rating: 4.6,
-    reviews: 178
+    reviews: 78
+  },
+  
+  // Filtration Support
+  {
+    id: 10,
+    name: "Sterile Filters (0.22μm)",
+    description: "Sterile membrane filters for final product filtration",
+    price: 149.99,
+    category: "Filtration Support",
+    image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400",
+    stock: 80,
+    rating: 4.8,
+    reviews: 234
+  },
+  {
+    id: 11,
+    name: "Filter Housings & Holders",
+    description: "Robust filter housings for various filtration applications",
+    price: 299.99,
+    category: "Filtration Support",
+    image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400",
+    stock: 20,
+    rating: 4.5,
+    reviews: 56
+  },
+  {
+    id: 12,
+    name: "Depth Filtration Systems",
+    description: "Complete depth filtration systems for clarification processes",
+    price: 799.99,
+    category: "Filtration Support",
+    image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400",
+    stock: 15,
+    rating: 4.7,
+    reviews: 34
+  },
+  
+  // Upstream Support
+  {
+    id: 13,
+    name: "Bioreactor Systems",
+    description: "Advanced bioreactor systems for cell culture and fermentation",
+    price: 15999.99,
+    category: "Upstream Support",
+    image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400",
+    stock: 3,
+    rating: 4.9,
+    reviews: 12
+  },
+  {
+    id: 14,
+    name: "Cell Culture Incubators",
+    description: "Precision-controlled incubators for optimal cell growth conditions",
+    price: 3999.99,
+    category: "Upstream Support",
+    image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400",
+    stock: 8,
+    rating: 4.8,
+    reviews: 28
+  },
+  {
+    id: 15,
+    name: "pH & DO Monitoring Systems",
+    description: "Real-time monitoring systems for pH and dissolved oxygen",
+    price: 1299.99,
+    category: "Upstream Support",
+    image: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=400",
+    stock: 12,
+    rating: 4.6,
+    reviews: 41
   }
 ];
 
@@ -152,6 +238,17 @@ router.get('/', (req, res) => {
 });
 
 // Get single product
+// Get categories (place above dynamic route to avoid shadowing)
+router.get('/categories/all', (req, res) => {
+  try {
+    const categories = [...new Set(products.map(product => product.category))];
+    res.json(categories);
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Get single product
 router.get('/:id', (req, res) => {
   try {
     const product = products.find(p => p.id === parseInt(req.params.id));
@@ -159,16 +256,6 @@ router.get('/:id', (req, res) => {
       return res.status(404).json({ message: 'Product not found' });
     }
     res.json(product);
-  } catch (error) {
-    res.status(500).json({ message: 'Server error' });
-  }
-});
-
-// Get categories
-router.get('/categories/all', (req, res) => {
-  try {
-    const categories = [...new Set(products.map(product => product.category))];
-    res.json(categories);
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
   }
