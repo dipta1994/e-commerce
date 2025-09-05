@@ -91,7 +91,7 @@ const Header = () => {
                   >
                     All Categories
                   </button>
-                  {categories.map((category) => (
+                  {Array.isArray(categories) && categories.map((category) => (
                     <button
                       key={category}
                       onClick={() => handleCategoryClick(category)}

@@ -176,7 +176,13 @@ const productSlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchCategories.fulfilled, (state, action) => {
-        state.categories = action.payload;
+        // Normalize payload to an array. Some backends return { categories: [] }
+        const payload = action.payload;
+        state.categories = Array.isArray(payload)
+          ? payload
+          : Array.isArray(payload?.categories)
+            ? payload.categories
+            : [];
       })
       .addCase(fetchCategories.rejected, (state, action) => {
         state.error = action.payload;
