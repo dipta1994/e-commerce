@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import api from '../../utils/api';
 
 // Async thunks
 export const createOrder = createAsyncThunk(
@@ -16,14 +16,8 @@ export const createOrder = createAsyncThunk(
         return rejectWithValue('No authentication token found');
       }
       
-      const config = {
-        headers: {
-          'x-auth-token': token,
-        },
-      };
-      
-      console.log('Making request to /api/orders');
-      const response = await axios.post('/api/orders', orderData, config);
+      console.log('Making request to /orders');
+      const response = await api.post('/orders', orderData);
       console.log('Order created successfully:', response.data);
       return response.data;
     } catch (error) {
@@ -49,13 +43,7 @@ export const fetchUserOrders = createAsyncThunk(
   async (userId, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem('token');
-      const config = {
-        headers: {
-          'x-auth-token': token,
-        },
-      };
-      
-      const response = await axios.get(`/api/orders/user/${userId}`, config);
+      const response = await api.get(`/orders/user/${userId}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data.message || 'Failed to fetch orders');
@@ -68,13 +56,7 @@ export const fetchOrderById = createAsyncThunk(
   async (orderId, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem('token');
-      const config = {
-        headers: {
-          'x-auth-token': token,
-        },
-      };
-      
-      const response = await axios.get(`/api/orders/${orderId}`, config);
+      const response = await api.get(`/orders/${orderId}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data.message || 'Failed to fetch order');
@@ -87,13 +69,7 @@ export const cancelOrder = createAsyncThunk(
   async (orderId, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem('token');
-      const config = {
-        headers: {
-          'x-auth-token': token,
-        },
-      };
-      
-      const response = await axios.patch(`/api/orders/${orderId}/cancel`, {}, config);
+      const response = await api.patch(`/orders/${orderId}/cancel`, {});
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data.message || 'Failed to cancel order');

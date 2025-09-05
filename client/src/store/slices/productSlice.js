@@ -54,7 +54,7 @@ export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async (params, { rejectWithValue }) => {
     try {
-      const response = await api.get('/api/products', { params });
+      const response = await api.get('/products', { params });
       return response.data;
     } catch (error) {
       console.log('Backend not available, using fallback data. Error:', error.message);
@@ -73,7 +73,7 @@ export const fetchProductById = createAsyncThunk(
   'products/fetchProductById',
   async (id, { rejectWithValue }) => {
     try {
-      const response = await api.get(`/api/products/${id}`);
+      const response = await api.get(`/products/${id}`);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Failed to fetch product');
@@ -85,7 +85,7 @@ export const fetchCategories = createAsyncThunk(
   'products/fetchCategories',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.get('/api/products/categories/all');
+      const response = await api.get('/products/categories/all');
       return response.data;
     } catch (error) {
       console.log('Backend not available, using fallback categories');

@@ -20,7 +20,9 @@ api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
     if (token) {
+      // Send token in both headers to support different backends
       config.headers.Authorization = `Bearer ${token}`;
+      config.headers['x-auth-token'] = token;
     }
     return config;
   },
