@@ -7,15 +7,6 @@ export const createOrder = createAsyncThunk(
   async (orderData, { rejectWithValue }) => {
     try {
       console.log('Creating order with data:', orderData);
-      
-      const token = localStorage.getItem('token');
-      console.log('Token found:', !!token);
-      
-      if (!token) {
-        console.error('No token found');
-        return rejectWithValue('No authentication token found');
-      }
-      
       console.log('Making request to /orders');
       const response = await api.post('/orders', orderData);
       console.log('Order created successfully:', response.data);
@@ -42,7 +33,6 @@ export const fetchUserOrders = createAsyncThunk(
   'orders/fetchUserOrders',
   async (userId, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
       const response = await api.get(`/orders/user/${userId}`);
       return response.data;
     } catch (error) {
@@ -55,7 +45,6 @@ export const fetchOrderById = createAsyncThunk(
   'orders/fetchOrderById',
   async (orderId, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
       const response = await api.get(`/orders/${orderId}`);
       return response.data;
     } catch (error) {
@@ -68,7 +57,6 @@ export const cancelOrder = createAsyncThunk(
   'orders/cancelOrder',
   async (orderId, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem('token');
       const response = await api.patch(`/orders/${orderId}/cancel`, {});
       return response.data;
     } catch (error) {
