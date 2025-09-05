@@ -35,20 +35,27 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            Welcome to Ecommerce
+      <section className="relative text-white">
+        {/* Background Image */}
+        <div
+          className="absolute inset-0 bg-cover bg-center"
+          style={{
+            backgroundImage:
+              "url('https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?q=80&w=2070&auto=format&fit=crop')",
+          }}
+        ></div>
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 via-indigo-800/80 to-purple-800/80"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 text-center">
+          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6">
+            “Innovation Through Collaboration: Sustainable, Affordable Pharma Solutions”
           </h1>
-          <p className="text-xl md:text-2xl mb-8 text-blue-100">
-            Discover amazing products at unbeatable prices
+          <p className="text-lg md:text-2xl mb-10 text-indigo-100 max-w-3xl mx-auto">
+            Pioneering breakthroughs in biotech to improve lives worldwide
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/products" className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-              Shop Now
-            </Link>
-            <Link to="/register" className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors">
-              Sign Up
+            <Link to="/products" className="bg-white text-indigo-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+              Explore Our Products
             </Link>
           </div>
         </div>

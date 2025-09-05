@@ -1,9 +1,11 @@
 import axios from 'axios';
 
 // Configure base URL for API calls
-const API_BASE_URL = process.env.NODE_ENV === 'production' 
-  ? 'https://ecommerce-website.onrender.com' // Render backend URL
-  : 'http://localhost:5000'; // Local development
+// Prefer explicit env var; fall back to Vercel-friendly relative path in production
+// and localhost during development.
+const API_BASE_URL =
+  process.env.REACT_APP_API_URL ||
+  (process.env.NODE_ENV === 'production' ? '/api' : 'http://localhost:5000');
 
 const api = axios.create({
   baseURL: API_BASE_URL,

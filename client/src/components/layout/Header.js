@@ -40,10 +40,10 @@ const Header = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">E</span>
+            <div className="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-lg">H</span>
             </div>
-            <span className="text-xl font-bold text-gray-900">Ecommerce</span>
+            <span className="text-xl font-bold text-gray-900">Healbee Biotech</span>
           </Link>
 
           {/* Search Bar */}
@@ -55,7 +55,7 @@ const Header = () => {
                   placeholder="Search products..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                 />
                 <button
                   type="submit"
@@ -71,13 +71,13 @@ const Header = () => {
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link to="/products" className="text-gray-700 hover:text-blue-600 transition-colors">
+            <Link to="/products" className="text-gray-700 hover:text-brand-600 transition-colors">
               Products
             </Link>
             
             {/* Categories Dropdown */}
             <div className="relative group">
-              <button className="text-gray-700 hover:text-blue-600 transition-colors flex items-center">
+              <button className="text-gray-700 hover:text-brand-600 transition-colors flex items-center">
                 Categories
                 <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -105,7 +105,7 @@ const Header = () => {
             </div>
 
             {/* Cart */}
-            <Link to="/cart" className="relative text-gray-700 hover:text-blue-600 transition-colors">
+            <Link to="/cart" className="relative text-gray-700 hover:text-brand-600 transition-colors">
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6m8 0V9a2 2 0 00-2-2H9a2 2 0 00-2 2v4.01" />
               </svg>
@@ -119,8 +119,8 @@ const Header = () => {
             {/* User Menu */}
             {isAuthenticated ? (
               <div className="relative group">
-                <button className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 transition-colors">
-                  <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+                <button className="flex items-center space-x-2 text-gray-700 hover:text-brand-600 transition-colors">
+                  <div className="w-8 h-8 bg-brand-600 rounded-full flex items-center justify-center">
                     <span className="text-white font-medium text-sm">
                       {user?.name?.charAt(0).toUpperCase()}
                     </span>
@@ -149,7 +149,7 @@ const Header = () => {
               </div>
             ) : (
               <div className="flex items-center space-x-4">
-                <Link to="/login" className="text-gray-700 hover:text-blue-600 transition-colors">
+                <Link to="/login" className="text-gray-700 hover:text-brand-600 transition-colors">
                   Login
                 </Link>
                 <Link to="/register" className="btn-primary">
@@ -162,7 +162,7 @@ const Header = () => {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100"
+            className="md:hidden p-2 rounded-md text-gray-700 hover:text-brand-600 hover:bg-gray-100"
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
